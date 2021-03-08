@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.Matchers;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,16 @@ public class TestBuildGradle {
       Mockito.when(mockedTransformer.getConfig()).thenReturn(config);
       
       System.out.println("Build gradle - sleeping one second");
+      try {
+         Thread.sleep(1000);
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+   }
+   
+   @After
+   public void sysoutFinish() {
+      System.out.println("Finished now");
       try {
          Thread.sleep(1000);
       } catch (InterruptedException e) {
