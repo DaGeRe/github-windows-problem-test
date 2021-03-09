@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import de.peass.dependency.execution.GradleParseUtil;
 
@@ -21,8 +19,6 @@ import de.peass.dependency.execution.GradleParseUtil;
  *
  */
 public class AndroidVersionUtil {
-
-   private static final Logger LOG = LogManager.getLogger(AndroidVersionUtil.class);
 
    private static Map<Integer, String> versions = new LinkedHashMap<>();
    private static Set<String> acceptedVersion = new HashSet<>();
@@ -42,7 +38,7 @@ public class AndroidVersionUtil {
             e.printStackTrace();
          }
       } else {
-         LOG.error("No version file existing!");
+         System.out.println("No version file existing!");
       }
 
       final File gradle = new File(System.getenv("user.home"), ".gradle");

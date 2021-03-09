@@ -1,7 +1,5 @@
 package de.peass.dependency.execution.gradle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.codehaus.groovy.ast.CodeVisitorSupport;
 import org.codehaus.groovy.ast.expr.ArgumentListExpression;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
@@ -12,8 +10,6 @@ import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 
 public class FindDependencyVisitor extends CodeVisitorSupport {
-
-   private static final Logger LOG = LogManager.getLogger(FindDependencyVisitor.class);
 
    int dependencyLine = -1;
    int testLine = -1;
@@ -27,7 +23,6 @@ public class FindDependencyVisitor extends CodeVisitorSupport {
 
    @Override
    public void visitMethodCallExpression(final MethodCallExpression call) {
-      LOG.trace("Call: {}", call.getMethodAsString());
       if (call != null && call.getMethodAsString() != null) {
          // System.out.println(call.getMethodAsString());
          if (call.getMethodAsString().equals("plugins")) {

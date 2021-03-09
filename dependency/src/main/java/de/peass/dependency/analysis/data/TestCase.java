@@ -2,12 +2,7 @@ package de.peass.dependency.analysis.data;
 
 import java.io.File;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import de.dagere.kopeme.generated.Kopemedata;
-import de.dagere.kopeme.generated.Kopemedata.Testcases;
 
 /**
  * Represents a testcase with its class and its method. If no method is given,
@@ -21,11 +16,6 @@ public class TestCase implements Comparable<TestCase> {
 	private final String clazz;
 	private final String method;
 
-	public TestCase(final Kopemedata data) {
-		clazz = data.getTestcases().getClazz();
-		method = data.getTestcases().getTestcase().get(0).getName();
-		module = "";
-	}
 
 	public TestCase(final String clazz, final String method) {
 		if (clazz.contains(File.separator)) { // possibly assertion, if speed
@@ -35,12 +25,6 @@ public class TestCase implements Comparable<TestCase> {
 		module = clazz.substring(0, clazz.indexOf("§"));
 		this.clazz = clazz.substring(clazz.indexOf("#") + 1, clazz.length());
 		this.method = method;
-	}
-
-	public TestCase(final Testcases testcases) {
-		module = "";
-		clazz = testcases.getClazz();
-		method = testcases.getTestcase().get(0).getName();
 	}
 
 	public String getClazz() {
