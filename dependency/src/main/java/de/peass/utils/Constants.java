@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import kieker.monitoring.writer.filesystem.aggregateddata.SummaryStatisticsDeserializer;
-import kieker.monitoring.writer.filesystem.aggregateddata.SummaryStatisticsSerializer;
 
 public class Constants {
 
@@ -61,8 +59,6 @@ public class Constants {
       OBJECTMAPPER.enable(SerializationFeature.INDENT_OUTPUT);
 
       final SimpleModule statisticsModule = new SimpleModule();
-      statisticsModule.addSerializer(SummaryStatistics.class, new SummaryStatisticsSerializer());
-      statisticsModule.addDeserializer(StatisticalSummary.class, new SummaryStatisticsDeserializer());
       OBJECTMAPPER.registerModule(statisticsModule);
    }
 }

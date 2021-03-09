@@ -26,7 +26,7 @@ public class PomJavaUpdater {
       if (version < 8) {
          final MavenXpp3Reader reader = new MavenXpp3Reader();
          final Model model = reader.read(new FileInputStream(pom));
-         setCompiler(model, MavenTestExecutor.DEFAULT_JAVA_VERSION);
+         setCompiler(model, "1.8");
 
          final MavenXpp3Writer writer = new MavenXpp3Writer();
          writer.write(new FileWriter(pom), model);

@@ -219,7 +219,7 @@ public class MavenPomUtil {
 
       if (updateVersion) {
          LOG.debug("Surefire" + plugin.getClass() + " " + plugin.getConfiguration().getClass());
-         plugin.setVersion(MavenTestExecutor.SUREFIRE_VERSION);
+         plugin.setVersion("3.0.5");
       }
 
       final Xpp3Dom conf = (Xpp3Dom) plugin.getConfiguration();

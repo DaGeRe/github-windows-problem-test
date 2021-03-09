@@ -13,20 +13,16 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import de.peass.config.MeasurementConfiguration;
-import de.peass.testtransformation.JUnitTestTransformer;
 
 public class TestBuildGradle {
 
    private static final File CURRENT = new File(new File("target"), "current_gradle");
 
-   private JUnitTestTransformer mockedTransformer;
    
    @Before
    public void setupTransformer() {
-      mockedTransformer = Mockito.mock(JUnitTestTransformer.class);
       MeasurementConfiguration config = new MeasurementConfiguration(2);
       config.setUseKieker(true);
-      Mockito.when(mockedTransformer.getConfig()).thenReturn(config);
       
       System.out.println("Build gradle - sleeping one second");
       try {
@@ -53,7 +49,7 @@ public class TestBuildGradle {
       final File destFile = new File(CURRENT, "build.gradle");
       FileUtils.copyFile(gradleFile, destFile);
 
-      GradleParseUtil.addDependencies(mockedTransformer, destFile, new File("xyz"));
+      GradleParseUtil.addDependencies(destFile, new File("xyz"));
 
       Assert.assertTrue(FileUtils.contentEquals(gradleFile, destFile));
    }
@@ -77,7 +73,7 @@ public class TestBuildGradle {
       final File destFile = new File(CURRENT, "build.gradle");
       FileUtils.copyFile(gradleFile, destFile);
 
-      GradleParseUtil.addDependencies(mockedTransformer, destFile, new File("xyz"));
+      GradleParseUtil.addDependencies(destFile, new File("xyz"));
 
       final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.defaultCharset());
 

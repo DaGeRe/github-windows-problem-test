@@ -22,7 +22,6 @@ import org.codehaus.plexus.util.IOUtil;
 
 import de.peass.dependency.execution.gradle.AndroidVersionUtil;
 import de.peass.dependency.execution.gradle.FindDependencyVisitor;
-import de.peass.testtransformation.JUnitTestTransformer;
 
 public class GradleParseUtil {
 
@@ -108,7 +107,7 @@ public class GradleParseUtil {
       }
    }
 
-   public static FindDependencyVisitor addDependencies(final JUnitTestTransformer testTransformer, final File buildfile, final File tempFolder) {
+   public static FindDependencyVisitor addDependencies(final File buildfile, final File tempFolder) {
       FindDependencyVisitor visitor = null;
       try {
          visitor = parseBuildfile(buildfile);
@@ -136,7 +135,7 @@ public class GradleParseUtil {
                gradleFileContents.add("}");
             }
 
-            addKiekerLine(testTransformer, tempFolder, visitor, gradleFileContents);
+            addKiekerLine(tempFolder, visitor, gradleFileContents);
          }
 
          Files.write(buildfile.toPath(), gradleFileContents, StandardCharsets.UTF_8);
@@ -146,9 +145,9 @@ public class GradleParseUtil {
       return visitor;
    }
 
-   public static void addKiekerLine(final JUnitTestTransformer testTransformer, final File tempFolder, final FindDependencyVisitor visitor, final List<String> gradleFileContents) {
+   public static void addKiekerLine(final File tempFolder, final FindDependencyVisitor visitor, final List<String> gradleFileContents) {
       if (tempFolder != null) {
-         final String javaagentArgument = new ArgLineBuilder(testTransformer).buildArglineGradle(tempFolder);
+         final String javaagentArgument = "-xAsd";
          if (visitor.getAndroidLine() != -1) {
             if (visitor.getUnitTestsAll() != -1) {
                gradleFileContents.add(visitor.getUnitTestsAll() - 1, javaagentArgument);

@@ -7,10 +7,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import de.peass.dependency.execution.ExecutionConfigMixin;
-import de.peass.dependency.execution.MeasurementConfigurationMixin;
-import net.kieker.sourceinstrumentation.AllowedKiekerRecord;
-
 public class MeasurementConfiguration implements Serializable {
    
    private static final long serialVersionUID = -6936740902708676182L;
@@ -36,7 +32,6 @@ public class MeasurementConfiguration implements Serializable {
    private boolean useGC = true;
    private int kiekerAggregationInterval = 5000;
    private String javaVersion = System.getProperty("java.version");
-   private AllowedKiekerRecord record = AllowedKiekerRecord.OPERATIONEXECUTION;
    private MeasurementStrategy measurementStrategy = MeasurementStrategy.SEQUENTIAL;
    
    private StatisticsConfiguration statisticsConfig = new StatisticsConfiguration();
@@ -67,30 +62,6 @@ public class MeasurementConfiguration implements Serializable {
       this.vms = vms;
       statisticsConfig.setType1error(type1error);
       statisticsConfig.setType2error(type2error);
-   }
-
-   public MeasurementConfiguration(final MeasurementConfigurationMixin mixin, final ExecutionConfigMixin executionMixin) {
-      this(executionMixin.getTimeout() * 60 * 1000, mixin.getVms(), mixin.getType1error(), mixin.getType2error());
-      setEarlyStop(mixin.isEarlyStop());
-      setUseKieker(mixin.isUseKieker());
-      setIterations(mixin.getIterations());
-      setWarmup(mixin.getWarmup());
-      setRepetitions(mixin.getRepetitions());
-      setUseGC(mixin.isUseGC());
-      setRecord(mixin.getRecord());
-      setMeasurementStrategy(mixin.getMeasurementStrategy());
-      
-      executionConfig.setVersion(executionMixin.getVersion());
-      executionConfig.setVersionOld(executionMixin.getVersionOld());
-      executionConfig.setStartversion(executionMixin.getStartversion());
-      executionConfig.setEndversion(executionMixin.getEndversion());
-      
-      executionConfig.setTestGoal(executionMixin.getTestGoal());
-      if (executionMixin.getIncludes() != null) {
-         for (String include : executionMixin.getIncludes()) {
-            executionConfig.getIncludes().add(include);
-         }
-      }
    }
 
    @JsonCreator
@@ -140,7 +111,6 @@ public class MeasurementConfiguration implements Serializable {
       this.useGC = other.useGC;
       this.kiekerAggregationInterval = other.kiekerAggregationInterval;
       this.javaVersion = other.javaVersion;
-      this.record = other.record;
       this.measurementStrategy = other.measurementStrategy;
       
    }
@@ -283,18 +253,6 @@ public class MeasurementConfiguration implements Serializable {
 
    public void setJavaVersion(final String javaVersion) {
       this.javaVersion = javaVersion;
-   }
-
-   public void setRecord(final AllowedKiekerRecord record) {
-      if (record == null) {
-         this.record = AllowedKiekerRecord.OPERATIONEXECUTION;
-      } else {
-         this.record = record;
-      }
-   }
-
-   public AllowedKiekerRecord getRecord() {
-      return record;
    }
 
    public boolean isUseSourceInstrumentation() {
