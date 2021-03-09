@@ -32,36 +32,24 @@ public class MeasurementConfiguration implements Serializable {
    private boolean useGC = true;
    private int kiekerAggregationInterval = 5000;
    private String javaVersion = System.getProperty("java.version");
-   private MeasurementStrategy measurementStrategy = MeasurementStrategy.SEQUENTIAL;
-   
-   private StatisticsConfiguration statisticsConfig = new StatisticsConfiguration();
-   private final ExecutionConfig executionConfig;
 
    public MeasurementConfiguration(final int vms) {
-      executionConfig = new ExecutionConfig(20);
       this.vms = vms;
    }
 
    public MeasurementConfiguration(final int vms, final int timeoutInMinutes) {
-      executionConfig = new ExecutionConfig(timeoutInMinutes);
       this.vms = vms;
    }
 
    public MeasurementConfiguration(final int vms, final String version, final String versionOld) {
-      executionConfig = new ExecutionConfig(20);
       this.vms = vms;
-      executionConfig.setVersion(version);
-      executionConfig.setVersionOld(versionOld);
    }
 
    public MeasurementConfiguration(@JsonProperty("timeout") final int timeout,
          @JsonProperty("vms") final int vms,
          @JsonProperty("type1error") final double type1error,
          @JsonProperty("type2error") final double type2error) {
-      executionConfig = new ExecutionConfig(timeout / (60 * 1000));
       this.vms = vms;
-      statisticsConfig.setType1error(type1error);
-      statisticsConfig.setType2error(type2error);
    }
 
    @JsonCreator
@@ -70,11 +58,8 @@ public class MeasurementConfiguration implements Serializable {
          @JsonProperty("earlystop") final boolean earlyStop,
          @JsonProperty("version") final String version,
          @JsonProperty("versionOld") final String versionOld) {
-      executionConfig = new ExecutionConfig(timeout / (60 * 1000));
       this.vms = vms;
       this.earlyStop = earlyStop;
-      executionConfig.setVersion(version);
-      executionConfig.setVersionOld(versionOld);
    }
 
    /**
@@ -83,18 +68,7 @@ public class MeasurementConfiguration implements Serializable {
     * @param other Configuration to copy
     */
    public MeasurementConfiguration(final MeasurementConfiguration other) {
-      executionConfig = new ExecutionConfig(other.getTimeoutInMinutes());
-      executionConfig.setTestGoal(other.getTestGoal());
-      executionConfig.setIncludes(other.getIncludes());
-      executionConfig.setVersion(other.getExecutionConfig().getVersion());
-      executionConfig.setVersionOld(other.getExecutionConfig().getVersionOld());
-      executionConfig.setStartversion(other.getExecutionConfig().getStartversion());
-      executionConfig.setEndversion(other.getExecutionConfig().getEndversion());
       this.vms = other.vms;
-      statisticsConfig.setType1error(other.getType1error());
-      statisticsConfig.setType2error(other.getType2error());
-      statisticsConfig.setOutlierFactor(other.getStatisticsConfig().getOutlierFactor());
-      statisticsConfig.setStatisticTest(other.getStatisticsConfig().getStatisticTest());
       this.earlyStop = other.earlyStop;
       this.warmup = other.warmup;
       this.iterations = other.iterations;
@@ -111,16 +85,6 @@ public class MeasurementConfiguration implements Serializable {
       this.useGC = other.useGC;
       this.kiekerAggregationInterval = other.kiekerAggregationInterval;
       this.javaVersion = other.javaVersion;
-      this.measurementStrategy = other.measurementStrategy;
-      
-   }
-   
-   public StatisticsConfiguration getStatisticsConfig() {
-      return statisticsConfig;
-   }
-   
-   public void setStatisticsConfig(final StatisticsConfiguration statisticsConfig) {
-      this.statisticsConfig = statisticsConfig;
    }
 
    /**
@@ -144,35 +108,8 @@ public class MeasurementConfiguration implements Serializable {
       this.redirectToNull = redirectToNull;
    }
 
-   public int getTimeout() {
-      return executionConfig.getTimeout();
-   }
-
-   @JsonIgnore
-   public int getTimeoutInMinutes() {
-      return executionConfig.getTimeoutInMinutes();
-   }
-
    public int getVms() {
       return vms;
-   }
-
-   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   public double getType1error() {
-      return statisticsConfig.getType1error();
-   }
-
-   public void setType1error(final double type1error) {
-      statisticsConfig.setType1error(type1error);
-   }
-
-   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   public double getType2error() {
-      return statisticsConfig.getType2error();
-   }
-
-   public void setType2error(final double type2error) {
-      statisticsConfig.setType2error(type2error);
    }
 
    public boolean isEarlyStop() {
@@ -181,22 +118,6 @@ public class MeasurementConfiguration implements Serializable {
 
    public void setEarlyStop(final boolean earlyStop) {
       this.earlyStop = earlyStop;
-   }
-
-   public String getVersion() {
-      return executionConfig.getVersion();
-   }
-
-   public void setVersion(final String version) {
-      executionConfig.setVersion(version);
-   }
-
-   public String getVersionOld() {
-      return executionConfig.getVersionOld();
-   }
-
-   public void setVersionOld(final String versionOld) {
-      executionConfig.setVersionOld(versionOld);
    }
 
    public int getWarmup() {
@@ -295,14 +216,6 @@ public class MeasurementConfiguration implements Serializable {
       this.enableAdaptiveMonitoring = allowAdaptiveConfig;
    }
 
-   public MeasurementStrategy getMeasurementStrategy() {
-      return measurementStrategy;
-   }
-
-   public void setMeasurementStrategy(final MeasurementStrategy measurementStrategy) {
-      this.measurementStrategy = measurementStrategy;
-   }
-
    /**
     * Returns the warmup that should be ignored when individual nodes are measured
     * 
@@ -323,25 +236,4 @@ public class MeasurementConfiguration implements Serializable {
       return removeSnapshots;
    }
 
-   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   public String getTestGoal() {
-      return executionConfig.getTestGoal();
-   }
-   
-   public void setTestGoal(final String testGoal) {
-      executionConfig.setTestGoal(testGoal);
-   }
-
-   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   public List<String> getIncludes() {
-      return executionConfig.getIncludes();
-   }
-
-   public void setIncludes(final List<String> includes) {
-      executionConfig.setIncludes(includes);
-   }
-
-   public ExecutionConfig getExecutionConfig() {
-      return executionConfig;
-   }
 }
