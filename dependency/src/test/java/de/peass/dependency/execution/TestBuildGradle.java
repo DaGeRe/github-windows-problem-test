@@ -10,9 +10,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import de.peass.config.MeasurementConfiguration;
 
 public class TestBuildGradle {
 
@@ -21,9 +18,6 @@ public class TestBuildGradle {
    
    @Before
    public void setupTransformer() {
-      MeasurementConfiguration config = new MeasurementConfiguration(2);
-      config.setUseKieker(true);
-      
       System.out.println("Build gradle - sleeping one second");
       try {
          Thread.sleep(1000);

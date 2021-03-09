@@ -47,23 +47,6 @@ public class AndroidVersionUtil {
       }
    }
 
-   public static boolean isLegelBuildTools(final String versionString) {
-      return !acceptedVersion.contains(versionString) &&
-            !versionString.equals("rootProject.buildToolsVersion") &&
-            !versionString.equals("rootProject.compileSdkVersion") &&
-            !versionString.equals("androidCompileSdkVersion.toInteger") &&
-            !versionString.equals("buildConfig.buildTools");
-   }
-   
-   public static boolean isLegalBuildToolsVersion(final String versionString) {
-      return !acceptedVersion.contains(versionString) 
-            && !versionString.equals("rootProject.buildToolsVersion") 
-            && !versionString.equals("rootProject.compileSdkVersion")
-            && !versionString.equals("androidBuildToolsVersion")
-            && !versionString.equals("androidCompileSdkVersion.toInteger()")
-            && !versionString.equals("buildConfig.buildTools");
-   }
-
    private static int getMajorVersion(final String versionString) {
       final int dotIndex = versionString.indexOf('.');
       if (dotIndex != -1) {

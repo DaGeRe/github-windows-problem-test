@@ -23,23 +23,6 @@ import de.peass.dependency.execution.gradle.FindDependencyVisitor;
 
 public class GradleParseUtil {
 
-	public static void writeInitGradle(final File init) {
-		if (!init.exists()) {
-			try (FileWriter fw = new FileWriter(init)) {
-				final PrintWriter pw = new PrintWriter(fw);
-				pw.write("allprojects{");
-				pw.write(" repositories {");
-				pw.write("  mavenLocal();");
-				pw.write("  maven { url 'https://maven.google.com' };");
-				fw.write(" }");
-				fw.write("}");
-				pw.flush();
-			} catch (final IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public static FindDependencyVisitor setAndroidTools(final File buildfile) {
 		FindDependencyVisitor visitor = null;
 		try {
@@ -78,13 +61,11 @@ public class GradleParseUtil {
 		final int lineIndex = visitor.getBuildTools() - 1;
 		final String versionLine = gradleFileContents.get(lineIndex).trim().replaceAll("'", "").replace("\"", "");
 		final String versionString = versionLine.split(":")[1].trim();
-		if (AndroidVersionUtil.isLegelBuildTools(versionString)) {
-			final String runningVersion = AndroidVersionUtil.getRunningVersion(versionString);
-			if (runningVersion != null) {
-				gradleFileContents.set(lineIndex, "'buildTools': '" + runningVersion + "'");
-			} else {
-				visitor.setHasVersion(false);
-			}
+		final String runningVersion = AndroidVersionUtil.getRunningVersion(versionString);
+		if (runningVersion != null) {
+			gradleFileContents.set(lineIndex, "'buildTools': '" + runningVersion + "'");
+		} else {
+			visitor.setHasVersion(false);
 		}
 	}
 
@@ -93,14 +74,12 @@ public class GradleParseUtil {
 		final int lineIndex = visitor.getBuildToolsVersion() - 1;
 		final String versionLine = gradleFileContents.get(lineIndex).trim().replaceAll("'", "").replace("\"", "");
 		final String versionString = versionLine.split(" ")[1].trim();
-		if (AndroidVersionUtil.isLegalBuildToolsVersion(versionString)) {
-			System.out.println(lineIndex + " " + versionLine);
-			final String runningVersion = AndroidVersionUtil.getRunningVersion(versionString);
-			if (runningVersion != null) {
-				gradleFileContents.set(lineIndex, "buildToolsVersion " + runningVersion);
-			} else {
-				visitor.setHasVersion(false);
-			}
+		System.out.println(lineIndex + " " + versionLine);
+		final String runningVersion = AndroidVersionUtil.getRunningVersion(versionString);
+		if (runningVersion != null) {
+			gradleFileContents.set(lineIndex, "buildToolsVersion " + runningVersion);
+		} else {
+			visitor.setHasVersion(false);
 		}
 	}
 
