@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class GradleParseUtil {
+public class FileWritingUtil {
 
    public static void doSomethingWithFile(final File buildfile) {
       try {

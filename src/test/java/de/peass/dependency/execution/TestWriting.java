@@ -15,12 +15,12 @@ public class TestWriting {
    
    @Test
    public void testNoUpdate() throws IOException {
-      final File gradleFile = new File("src/test/resources/gradle/differentPlugin.gradle");
+      final File gradleFile = new File("src/test/resources/gradle/1.txt");
 
       final File destFile = new File(CURRENT, "build.gradle");
       FileUtils.copyFile(gradleFile, destFile);
 
-      GradleParseUtil.doSomethingWithFile(destFile);
+      FileWritingUtil.doSomethingWithFile(destFile);
 
       final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.forName("UTF-8"));
       Assert.assertThat(gradleFileContents, Matchers.anyOf(Matchers.containsString("Test: 1"),
@@ -28,25 +28,25 @@ public class TestWriting {
    }
 
    @Test
-   public void testBuildtoolUpdate() throws IOException {
-      final File gradleFile = new File("src/test/resources/gradle/build.gradle");
-      testUpdate(gradleFile, true);
+   public void testTwice() throws IOException {
+      final File gradleFile = new File("src/test/resources/gradle/1.txt");
+      testCopyAndWrite(gradleFile, true);
 
-      final File gradleFile2 = new File("src/test/resources/gradle/v2.gradle");
-      testUpdate(gradleFile2, true);
+      final File gradleFile2 = new File("src/test/resources/gradle/2.txt");
+      testCopyAndWrite(gradleFile2, true);
    }
 
    @Test
    public void testAndroidLib() throws IOException {
-      final File gradleFile3 = new File("src/test/resources/gradle/androidlib.gradle");
-      testUpdate(gradleFile3, false);
+      final File gradleFile3 = new File("src/test/resources/gradle/1.txt");
+      testCopyAndWrite(gradleFile3, false);
    }
 
-   public void testUpdate(final File gradleFile, final boolean buildtools) throws IOException {
-      final File destFile = new File(CURRENT, "build.gradle");
+   public void testCopyAndWrite(final File gradleFile, final boolean buildtools) throws IOException {
+      final File destFile = new File(CURRENT, "example.txt");
       FileUtils.copyFile(gradleFile, destFile);
 
-      GradleParseUtil.doSomethingWithFile(destFile);
+      FileWritingUtil.doSomethingWithFile(destFile);
 
       final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.forName("UTF-8"));
 
