@@ -6,35 +6,12 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.Matchers;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-public class TestBuildGradle {
+public class TestWriting {
 
-   private static final File CURRENT = new File(new File("target"), "current_gradle");
-
-   
-   @Before
-   public void setupTransformer() {
-      System.out.println("Build gradle - sleeping one second");
-      try {
-         Thread.sleep(1000);
-      } catch (InterruptedException e) {
-         e.printStackTrace();
-      }
-   }
-   
-   @After
-   public void sysoutFinish() {
-      System.out.println("Finished now");
-      try {
-         Thread.sleep(1000);
-      } catch (InterruptedException e) {
-         e.printStackTrace();
-      }
-   }
+   private static final File CURRENT = new File(new File("target"), "current_test");
    
    @Test
    public void testNoUpdate() throws IOException {
@@ -43,9 +20,11 @@ public class TestBuildGradle {
       final File destFile = new File(CURRENT, "build.gradle");
       FileUtils.copyFile(gradleFile, destFile);
 
-      GradleParseUtil.addDependencies(destFile, new File("xyz"));
+      GradleParseUtil.doSomethingWithFile(destFile);
 
-      Assert.assertTrue(FileUtils.contentEquals(gradleFile, destFile));
+      final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.forName("UTF-8"));
+      Assert.assertThat(gradleFileContents, Matchers.anyOf(Matchers.containsString("Test: 1"),
+            Matchers.containsString("Test: 2")));
    }
 
    @Test
@@ -67,16 +46,13 @@ public class TestBuildGradle {
       final File destFile = new File(CURRENT, "build.gradle");
       FileUtils.copyFile(gradleFile, destFile);
 
-      GradleParseUtil.addDependencies(destFile, new File("xyz"));
+      GradleParseUtil.doSomethingWithFile(destFile);
 
       final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.forName("UTF-8"));
 
       if (buildtools) {
-         Assert.assertThat(gradleFileContents, Matchers.anyOf(Matchers.containsString("'buildTools': '19.1.0'"),
-                     Matchers.containsString("buildToolsVersion 19.1.0")));
+         Assert.assertThat(gradleFileContents, Matchers.anyOf(Matchers.containsString("Test: 1"),
+                     Matchers.containsString("Test: 2")));
       }
-      
-
-      Assert.assertThat(gradleFileContents, Matchers.containsString("de.dagere.kopeme:kopeme-junit"));
    }
 }
