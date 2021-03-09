@@ -69,7 +69,7 @@ public class TestBuildGradle {
 
       GradleParseUtil.addDependencies(destFile, new File("xyz"));
 
-      final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.defaultCharset());
+      final String gradleFileContents = FileUtils.readFileToString(destFile, Charset.forName("UTF-8"));
 
       if (buildtools) {
          Assert.assertThat(gradleFileContents, Matchers.anyOf(Matchers.containsString("'buildTools': '19.1.0'"),
