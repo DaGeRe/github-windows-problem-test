@@ -72,29 +72,7 @@
 			<version>3.8.0</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-astbuilder</artifactId>
-			<version>3.0.7</version>
-		</dependency>
 	</dependencies>
-
-	<developers>
-		<developer>
-			<id>DaGeRe</id>
-			<name>David Georg Reichelt</name>
-			<email>kopeme@dagere.de</email>
-		</developer>
-	</developers>
-
-	<licenses>
-		<license>
-			<name>GNU General Public License (GPL) version 2.0</name>
-			<url>https://www.gnu.org/licenses/gpl-2.0.html</url>
-			<comments>License can be found in misc/gpl-2.0.txt</comments>
-		</license>
-	</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
