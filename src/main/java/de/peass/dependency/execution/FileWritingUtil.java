@@ -10,20 +10,19 @@ import java.util.List;
 
 public class FileWritingUtil {
 
-   public static void doSomethingWithFile(final File buildfile) {
+   public static void doSomethingWithFile(final File exampleFile) {
       try {
-         final List<String> gradleFileContents = Files.readAllLines(Paths.get(buildfile.toURI()));
+         final List<String> fileContents = Files.readAllLines(Paths.get(exampleFile.toURI()));
 
-         BufferedWriter buildfileWriter = new BufferedWriter(new FileWriter(buildfile));
-         for (String line : gradleFileContents) {
-            buildfileWriter.write(line);
+         try (BufferedWriter buildfileWriter = new BufferedWriter(new FileWriter(exampleFile))){
+            for (String line : fileContents) {
+               buildfileWriter.write(line);
+            }
+            for (int i = 0; i < 10; i++) {
+               buildfileWriter.write("Test: " + i);
+            }
+            buildfileWriter.flush();
          }
-         for (int i = 0; i < 10; i++) {
-            buildfileWriter.write("Test: " + i);
-         }
-         buildfileWriter.flush();
-
-//         Files.write(buildfile.toPath(), gradleFileContents, StandardCharsets.UTF_8);
       } catch (final IOException e) {
          e.printStackTrace();
       }
