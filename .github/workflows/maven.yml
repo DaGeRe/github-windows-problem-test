@@ -32,6 +32,11 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+    - name: Install kieker
+      run: |
+        cd .. && git clone -b windowsTest git@github.com:DaGeRe/kieker.git 
+        cd kieker && ./gradlew -x check aspectJJar publishToMavenLocal
+        cd ../../
     - name: Build with Maven
       run: mvn -B verify --file pom.xml 
     - name: Publish Test Report ${{ matrix.java }}
@@ -45,6 +50,4 @@ jobs:
       with:
         name: Unit Test Results (Java ${{ matrix.java }})
         path: |
-          dependency/target/surefire-reports/*
-          measurement/target/surefire-reports/*
-          analysis/target/surefire-reports/*
+          target/surefire-reports/*
