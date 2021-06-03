@@ -32,11 +32,6 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
-    - name: Install kieker
-      run: |
-        cd .. && git clone -b windowsTest git@github.com:DaGeRe/kieker.git 
-        cd kieker && ./gradlew -x check aspectJJar publishToMavenLocal
-        cd ../../
     - name: Build with Maven
       run: mvn -B verify --file pom.xml 
     - name: Publish Test Report ${{ matrix.java }}
